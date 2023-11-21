@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    font-family: Inter, system7-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: dark;
+    color: rgba(255, 255, 255);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: #050505;
+}
+
+.container {
+    max-width: 1240px;
+    margin: auto; 
+}
+
+@property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 1turn;
+    inherits: false
+}
+
+@keyframes gradient-rotate {
+    0% {
+        --gradient-angle: 360deg
+    }
+    to {
+        --gradient-angle: 0deg
+    }
+}
+
+.cool-border:hover {
+    transition: all 0.3s;
+    background: linear-gradient(var(--gradient-angle),hsla(0,0%,100%,.5),hsla(0,0%,100%,.1),#fff,hsla(0,0%,100%,.3));
+    animation: gradient-rotate 5s linear infinite reverse;
+}
