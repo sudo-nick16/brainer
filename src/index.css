@@ -48,3 +48,20 @@ body {
     background: linear-gradient(var(--gradient-angle),hsla(0,0%,100%,.5),hsla(0,0%,100%,.1),#fff,hsla(0,0%,100%,.3));
     animation: gradient-rotate 5s linear infinite reverse;
 }
+
+*::-webkit-scrollbar {
+    width: 8px;
+}  
+
+*::-webkit-scrollbar-corner {
+    display: none;
+}  
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 5px;
+}

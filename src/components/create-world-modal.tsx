@@ -6,13 +6,13 @@ import { useModal, useStore } from '../utils/context';
 import { saveFileToFileSystem } from '../utils/fileSystem';
 import { slugify } from '../utils/slugify';
 
-const CreateWorldModal = ({ }) => {
+const CreateWorldModal = () => {
     const { updateState, worlds } = useStore();
     const { show, state, setState, close } = useModal().createWorldModal;
 
     const setImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (state.name?.trim() === '') {
-            alert("error: name is empty.");
+            alert('error: name is empty.');
             return;
         }
         if (event.target.files) {
@@ -31,20 +31,20 @@ const CreateWorldModal = ({ }) => {
     }
 
     const createWorld = () => {
-        if (worlds.find(w => w.name.trim() === state.name?.trim())) {
-            alert("error: already exists.");
+        if (worlds.find(w => w.slug === slugify(state.name!))) {
+            alert('error: already exists.');
             return;
         }
         if (state.name?.trim() === '') {
-            alert("error: name is empty.");
+            alert('error: name is empty.');
             return;
         }
         if (!state.img) {
-            alert("error: no image selected.");
+            alert('error: no image selected.');
             return;
         }
-        let slug = slugify(state.name!);
-        let imageName = `${slug}.png`;
+        const slug = slugify(state.name!);
+        const imageName = `${slug}.png`;
         saveFileToFileSystem(imageName, state.img).then(() => {
             updateState({
                 worlds: [...worlds, {
@@ -57,13 +57,14 @@ const CreateWorldModal = ({ }) => {
             })
             close();
         }).catch(error => {
-            console.log("error: could not save image to the filesystem - ", error);
+            console.log('error: could not save image to the filesystem - ', error);
         });
     }
 
     return (
         show &&
         <OutsideClickWrapper
+            listenerState={show}
             onOutsideClick={onOutsideClick}
             className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20'
         >
@@ -76,10 +77,10 @@ const CreateWorldModal = ({ }) => {
                             state.img ? <img src={state.img} className='h-full w-full object-cover' /> : 'Choose background'
                         }
                     </label>
-                    <input onChange={(e) => setImage(e)} type='file' id="world-img" className='hidden' />
+                    <input onChange={(e) => setImage(e)} type='file' id='world-img' className='hidden' />
                 </div>
                 <Button onClick={createWorld}>Create</Button>
-                <Button className='absolute right-3 top-3 rounded-full h-8 w-8 !p-0' onClick={close}>x</Button>
+                <Button className='absolute right-3 top-3 !rounded-full h-8 w-8 !p-0' onClick={close}>x</Button>
             </div>
         </OutsideClickWrapper>
     )

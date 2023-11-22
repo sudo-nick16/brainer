@@ -1,12 +1,13 @@
-import { createContext, useContext, useState } from "react";
-import { useLocalStorage } from "./useLocalStorage";
-import { getItem } from "./storage";
-import { Adventure, World } from "../types";
+import { createContext, useContext, useState } from 'react';
+import { useLocalStorage } from './useLocalStorage';
+import { getItem } from './storage';
+import { Adventure, World } from '../types';
 
 const initialState = {
-    currentWorld: "",
-    editMode: false,
-    showModal: false,
+    currentWorld: '',
+    opacity: 50,
+    animate: false,
+    deleteMode: false,
     worlds: [] as World[],
     matrixView: false,
 }
@@ -23,7 +24,7 @@ const Store = createContext<{
 export const useStore = () => useContext(Store)!;
 
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-    const [state, setState] = useLocalStorage(() => getItem("brainer", initialState));
+    const [state, setState] = useLocalStorage(() => getItem('brainer', initialState));
 
     const updateState = (arg: Partial<InitalState> | ((arg: InitalState) => InitalState)) => {
         if (typeof arg === 'function') {
@@ -76,12 +77,23 @@ export const useGenericModal = <T,>(initialState: T) => {
 
 type ModalObj<T> = ReturnType<typeof useGenericModal<T>>
 
+const initialSettingsState = {
+    deleteMode: false,
+    opacity: 60,
+    animate: false,
+}
+
+const initialCreateWorldState = {
+    name: '',
+    img: ''
+}
 
 const initialModalState = {
-    createWorldModal: {} as ModalObj<Partial<World>>,
-    editWorldModal: {} as ModalObj<Partial<World>>,
-    createAdventureModal: {} as ModalObj<Partial<Adventure>>,
-    editAdventureModal: {} as ModalObj<Partial<Adventure>>,
+    createWorldModal: {} as ModalObj<typeof initialCreateWorldState>,
+    editWorldModal: {} as ModalObj<World>,
+    createAdventureModal: {} as ModalObj<Adventure>,
+    editAdventureModal: {} as ModalObj<Adventure>,
+    settingsModal: {} as ModalObj<Partial<typeof initialSettingsState>>,
 }
 
 export type InitialModalState = typeof initialModalState;
@@ -91,13 +103,14 @@ const ModalContext = createContext(initialModalState);
 export const useModal = () => useContext(ModalContext);
 
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
-    const createWorldModal = useGenericModal<Partial<World>>({ name: '', img: '' });
-    const editWorldModal = useGenericModal<Partial<World>>({ name: '', img: '' })
-    const createAdventureModal = useGenericModal<Partial<Adventure>>({ description: '', urgent: false, important: false })
-    const editAdventureModal = useGenericModal<Partial<Adventure>>({ description: '', urgent: false, important: false })
+    const createWorldModal = useGenericModal(initialCreateWorldState);
+    const editWorldModal = useGenericModal<World>({ name: '', img: '', adventures: [], slug: '', createdAt: 0 })
+    const createAdventureModal = useGenericModal<Adventure>({ description: '', urgent: false, important: false, createdAt: 0 })
+    const editAdventureModal = useGenericModal<Adventure>({ description: '', urgent: false, important: false, createdAt: 0 })
+    const settingsModal = useGenericModal<Partial<typeof initialSettingsState>>(initialSettingsState);
 
     return (
-        <ModalContext.Provider value={{ createWorldModal, editWorldModal, createAdventureModal, editAdventureModal }}>
+        <ModalContext.Provider value={{ createWorldModal, editWorldModal, createAdventureModal, editAdventureModal, settingsModal }}>
             {children}
         </ModalContext.Provider>
     )

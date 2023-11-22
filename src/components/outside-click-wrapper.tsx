@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useRef } from 'react'
 
 type OutsideClickWrapperProps = React.DOMAttributes<HTMLElement> & React.AllHTMLAttributes<HTMLElement> & {
-    onOutsideClick: (...args: [MouseEvent, ...any]) => void;
+    onOutsideClick: <Args extends any[]>(...args: [MouseEvent, ...Args]) => void;
     as?: keyof JSX.IntrinsicElements;
     listenerState?: boolean
 }
@@ -9,7 +9,7 @@ type OutsideClickWrapperProps = React.DOMAttributes<HTMLElement> & React.AllHTML
 type Ref = HTMLElement;
 
 const OutsideClickWrapper = forwardRef<Ref, OutsideClickWrapperProps>((props, compRef) => {
-    const { onOutsideClick, as: Tag = "div", listenerState = true, children, ...rest } = props;
+    const { onOutsideClick, as: Tag = 'div', listenerState = true, children, ...rest } = props;
     const ref = useRef<HTMLElement>(null);
     useEffect(() => {
         if (!listenerState) {
@@ -20,21 +20,21 @@ const OutsideClickWrapper = forwardRef<Ref, OutsideClickWrapperProps>((props, co
                 onOutsideClick(e);
             }
         }
-        window.addEventListener("mousedown", handleOutsideClick);
+        window.addEventListener('mousedown', handleOutsideClick);
         return () => {
-            window.removeEventListener("mousedown", handleOutsideClick);
+            window.removeEventListener('mousedown', handleOutsideClick);
         }
     }, [listenerState])
     return (
-        // @ts-ignore
+        // @ts-expect-error - ts is bad
         <Tag
             {...rest}
-            // @ts-ignore
+            // @ts-expect-error - ts is bad
             ref={(e: HTMLElement) => {
-                // @ts-ignore
+                // @ts-expect-error - ts is bad
                 ref.current = e;
                 if (compRef) {
-                    // @ts-ignore
+                    // @ts-expect-error - ts is bad
                     compRef.current = e;
                 }
             }}
