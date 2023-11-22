@@ -108,7 +108,7 @@ const World = () => {
                       <img
                         onClick={() => deleteAdventure(adv)}
                         className='bg-background rounded-full absolute top-0 right-0 active:opacity-90 translate-x-1/2
-                                        cursor-pointer -translate-y-1/2 h-6 w-6 z-50'
+                                        cursor-pointer -translate-y-1/2 h-5 w-5 z-50'
                         src={closeIcon}
                       />
                     }
@@ -127,7 +127,7 @@ const World = () => {
                       key={i}
                       className='relative bg-black bg-opacity-40 border border-dashed rounded-lg'
                     >
-                      <div className='rounded-lg p-4 gap-2 flex flex-row flex-wrap h-full overflow-y-auto'>
+                      <div className='rounded-lg p-4 gap-2 gap-x-3 flex flex-row flex-wrap max-h-[100%] overflow-y-auto'>
                         {mat.legend}
                         {
                           world.adventures.map(adv => {
@@ -148,7 +148,7 @@ const World = () => {
                                     <img
                                       onClick={() => deleteAdventure(adv)}
                                       className='bg-background rounded-full absolute top-0 right-0 active:opacity-90 translate-x-1/2
-                                            cursor-pointer -translate-y-1/2 h-6 w-6 z-50'
+                                            cursor-pointer -translate-y-1/2 h-5 w-5 z-50'
                                       src={closeIcon}
                                     />
                                   }
