@@ -61,13 +61,19 @@ function readdir(dir) {
 }
 
 async function generate_pwa_files() {
-  let static_resources = [];
-  let files = await readdir("./dist/assets");
-  static_resources = [...static_resources, ...files.map(f => `/assets/${f}`)]
-  files = await readdir("./dist");
-  static_resources = [...static_resources, ...files.map(f => `/${f}`).filter(f => f.includes("."))]
-  static_resources.push("/");
-  fs.writeFileSync("./dist/sw.js", swJsFileStr(static_resources))
+  console.log("generating pwa files...");
+  try {
+    let static_resources = [];
+    let files = await readdir("./dist/assets");
+    static_resources = [...static_resources, ...files.map(f => `/assets/${f}`)]
+    files = await readdir("./dist");
+    static_resources = [...static_resources, ...files.map(f => `/${f}`).filter(f => f.includes("."))]
+    static_resources.push("/");
+    fs.writeFileSync("./dist/sw.js", swJsFileStr(static_resources))
+    console.log("pwa files generated...");
+  } catch(err) {
+    console.log("error: ", err);
+  }
 }
 
 generate_pwa_files();
