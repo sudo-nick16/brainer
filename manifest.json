@@ -1,0 +1,13 @@
+{
+  "name": "Brainer",
+  "short_name": "Brainer",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "display": "standalone"
+}

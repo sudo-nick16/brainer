@@ -78,9 +78,7 @@ export const useGenericModal = <T,>(initialState: T) => {
 type ModalObj<T> = ReturnType<typeof useGenericModal<T>>
 
 const initialSettingsState = {
-  deleteMode: false,
-  opacity: 60,
-  animate: false,
+  devMode: false,
 }
 
 const initialCreateWorldState = {
@@ -95,8 +93,6 @@ const initialModalState = {
   editAdventureModal: {} as ModalObj<Adventure>,
   settingsModal: {} as ModalObj<Partial<typeof initialSettingsState>>,
 }
-
-export type InitialModalState = typeof initialModalState;
 
 const ModalContext = createContext(initialModalState);
 

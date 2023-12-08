@@ -68,12 +68,16 @@ const World = () => {
   }
 
   useEffect(() => {
-    if (!world) {
-      navigate('/');
-      return;
+    const handleImage = async () => {
+      if (!world) {
+        navigate('/');
+        return;
+      }
+      const img = await loadImage(world.img);
+      setImg(img);
+      updateState({ currentWorld: world.name });
     }
-    loadImage(world.img).then(i => setImg(i));
-    updateState({ currentWorld: world.name });
+    handleImage();
     return () => {
       updateState({ currentWorld: '' });
     }

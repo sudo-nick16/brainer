@@ -3,7 +3,7 @@ import Input from './input';
 import Button from './button';
 import OutsideClickWrapper from './outside-click-wrapper';
 import { useModal, useStore } from '../utils/context';
-import { loadImage, saveFileToFileSystem } from '../utils/fileSystem';
+import { loadImage, saveImage } from '../utils/fileSystem';
 import { slugify } from '../utils/slugify';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,12 +35,14 @@ const EditWorldModal = () => {
   }
 
   useEffect(() => {
-    if (!state.img) {
-      return;
+    const handleImage = async () => {
+      if (!state.img) {
+        return;
+      }
+      const img = await loadImage(state.img!);
+      setSelectedImage(img);
     }
-    loadImage(state.img!).then(img => {
-      setSelectedImage(img)
-    });
+    handleImage();
   }, [state.img])
 
   const resetInputs = () => {
@@ -62,7 +64,7 @@ const EditWorldModal = () => {
     }
     const slug = slugify(state.name!);
     const imageName = `${slug}.png`;
-    saveFileToFileSystem(imageName, selectedImage as string).then(() => {
+    saveImage(imageName, selectedImage as string).then(() => {
       updateState(curr => {
         const worlds = curr.worlds.map(w => {
           if (w.createdAt === state.createdAt) {
